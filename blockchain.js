@@ -87,6 +87,8 @@ class Blockchain {
   }
 
   minePendingTransactions(miningRewardAddress) {
+    if (this.pendingTransactions.length == 0) return;
+
     const block = new Block(Date.now(), this.pendingTransactions);
     block.mineBlock(this.difficulty);
 
