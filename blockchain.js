@@ -86,6 +86,10 @@ class Blockchain {
     return this.chain[this.chain.length - 1];
   }
 
+  isSomeRealTransaction(transaction) {
+    return !!transaction.fromAddress;
+  }
+
   minePendingTransactions(miningRewardAddress) {
     if (this.pendingTransactions.length == 0) return;
 
@@ -95,9 +99,11 @@ class Blockchain {
     console.log("Block successfully mined!");
     this.chain.push(block);
 
-    this.pendingTransactions = [
-      new Transaction(null, miningRewardAddress, this.miningReward),
-    ];
+    if (this.pendingTransactions.some(this.isSomeRealTransaction)) {
+      this.pendingTransactions = [
+        new Transaction(null, miningRewardAddress, this.miningReward),
+      ];
+    }
   }
 
   addTransaction(transaction) {
